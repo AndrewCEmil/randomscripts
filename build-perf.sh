@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 #Defaults
 #TODO default
 MPERFPATH=/home/ace/mongo-perf/
