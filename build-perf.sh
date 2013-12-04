@@ -4,6 +4,8 @@
 MPERFPATH=/home/ace/mongo-perf/
 BUILD_DIR=$(pwd)
 NUM_CPUS=$(grep ^processor /proc/cpuinfo | wc -l)
+RHOST="localhost"
+RPORT=28001
 
 function do_git_tasks() {
     cd $BUILD_DIR
@@ -14,13 +16,13 @@ function do_git_tasks() {
 
 function run_build() {
     cd $BUILD_DIR
-    scons -j $NUM_CPUS --mute --opt=off 
+    scons -j $NUM_CPUS --mute --opt=off mongod
 }
 
 
 function run_mongo-perf() {
     cd $MPERFPATH
-    python runner.py --mongod $BUILD_DIR/mongod --local -l `date` --rhost localhost --rport 28001
+    python runner.py --mongod $BUILD_DIR/mongod --local -l `date` --rhost $RHOST --rport $RPORT
 }
 
 
