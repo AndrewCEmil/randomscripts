@@ -1,16 +1,9 @@
 #!/bin/bash
 #Defaults
-#TODO build_dir default
+#TODO default
 MPERFPATH=/home/ace/mongo-perf/
 BUILD_DIR=$(pwd)
-DB_PATH=/data
-MV_PATH=/local/ml
 NUM_CPUS=$(grep ^processor /proc/cpuinfo | wc -l)
-ERRORLOG=covbuilderrors.log
-failedtests[${#failedtests[@]}]="Failed Test List:"
-# run every friendly test. quota is not a friendly test. jsPerf isn't anymore either
-TEST_PLAN="js clone repl replSets ssl dur auth aggregation failPoint multiVersion disk sharding tool parallel" 
-
 
 function do_git_tasks() {
     cd $BUILD_DIR
