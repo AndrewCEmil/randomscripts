@@ -6,6 +6,7 @@ BUILD_DIR=$(pwd)
 NUM_CPUS=$(grep ^processor /proc/cpuinfo | wc -l)
 RHOST="localhost"
 RPORT=28001
+BREAK_PATH=/home/ace/stop-build-perf
 
 function do_git_tasks() {
     cd $BUILD_DIR
