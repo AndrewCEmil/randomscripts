@@ -36,5 +36,5 @@ do
     fi
     do_git_tasks
     run_build
-    run_mongo_perf
+    run_mongo-perf
 done
