@@ -24,7 +24,7 @@ function run_build() {
 
 function run_mongo-perf() {
     cd $MPERFPATH
-    python runner.py --mongod $BUILD_DIR/mongod --local -l `date` --rhost $RHOST --rport $RPORT
+    python runner.py --mongod $BUILD_DIR/mongod --local -l "`date`" --rhost $RHOST --rport $RPORT
 }
 
 
