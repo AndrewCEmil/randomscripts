@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 #Defaults
 which lcov
 if [ $(uname) == "Darwin" ]; then
@@ -10,8 +11,8 @@ LCOV_OUT=./lcov-output
 LCOV_TMP=.
 BRANCH=master
 BUILD_DIR=$(pwd)
-DO_CLEAN=0
-DO_PULL=0
+DO_CLEAN=1
+DO_PULL=1
 DO_PATCH=0
 DO_CO=0
 DO_GIT=1
@@ -92,7 +93,7 @@ function run_unittests() {
     # Run tests individually so that failures are noted, but bypassed
     #for test in smoke smokeCppUnittests smokeDisk smokeTool smokeAuth  smokeClient test; do 
     # run the unit tests first
-    for test in smoke smokeCppUnittests smokeClient test; do 
+    for test in smoke smokeCppUnittests smokeClient; do 
         scons --ssl -j${CPUS} --mute --smokedbprefix=$DB_PATH --opt=off --gcov $test; 
         if [ $? != 0 ]; then
             error_disp $test
@@ -174,7 +175,7 @@ function run_coverage () {
         error_disp $test
         echo lcov pass 3 failed
     fi  
-    unset $covlist
+    unset covlist
 
     # Run genhtml with 
     genhtml -s -o $LCOV_OUT/$REV -t "Branch: $BRANCH Commit:$REV $@" --highlight lcov-${REV}.info --rc lcov_branch_coverage=1
