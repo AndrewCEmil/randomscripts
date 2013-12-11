@@ -298,7 +298,7 @@ do
         do_git_tasks
         GIT_RES=$?
     fi
-    if [ $GIT_RES == 0]; then
+    if [ $GIT_RES == 0 ]; then
         
         if [ $DO_BUILD != 0 ]; then
             run_build
