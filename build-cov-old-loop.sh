@@ -20,7 +20,7 @@ DO_BUILD=1
 DO_TESTS=1
 DO_JSTEST=1
 DO_UNIT=1
-DO_COV=1
+DO_COV=0
 DB_PATH=/data
 MV_PATH=/local/ml
 ERRORLOG=covbuilderrors.log
@@ -126,10 +126,6 @@ function run_jstests() {
 }
 
 function run_coverage () {
-    # Make sure we're supposed to be here
-    if [ $DO_COV -eq 0 ]; then
-        return
-    fi
     # figure out where the binaries are
     cd $BUILD_DIR
     buildout=$(dirname $(find build -type f -perm +111 -name mongod))
