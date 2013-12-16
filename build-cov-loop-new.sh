@@ -10,6 +10,7 @@ LCOV_OUT=./lcov-output
 LCOV_TMP=.
 BRANCH=master
 BUILD_DIR=$(pwd)
+QA_DIR=/mnt/workspace/QA
 DO_CLEAN=1
 DO_PULL=1
 DO_PATCH=0
@@ -38,6 +39,12 @@ echo '===================================================='
 }
 
 function do_git_tasks() {
+    #the following is bad code/it doesnt fit in...sue me, I need to put it up top to avoid issues with the return value
+    cd $QA_DIR
+    git checkout $BRANCH
+    git clean -fqdx 
+    git pull
+
     cd $BUILD_DIR
     if [ $DO_CO != 1 ]; then
         git checkout $BRANCH
@@ -59,6 +66,7 @@ function do_git_tasks() {
             exit
         fi
     fi
+
 }
 
 function run_build() {
@@ -108,6 +116,12 @@ function run_jstests() {
         # Takes longer, but gives us incremental coverage results
         run_coverage $test
     done
+}
+
+function run_qatests() {
+    cd $QA_DIR/mci
+    python run_qa_repo_tests.py --mci-mode --mongo-repo-path=$BUILD_DIR > test_files.out
+    python buildscripts/smoke.py --continue-on-failure --with-cleanbb --mongod $BUILD_DIR/mongod --mongo $BUILD_DIR/mongo --report-file report.json  --mode=files $(cat ./test_files.out)
 }
 
 function run_coverage () {
@@ -175,6 +189,7 @@ function help () {
     echo '--auth run jstests with --auth parameter to smoke'
     echo '--patch "patch path/name" patch to apply before build (not implemented yet)'
     echo '--build-dir "path" place where MongoDB source lives'
+    echo '--qa-dir "path" place where the QA dir lives'
     echo '--mv-dir "path" multiversion link directory'
     echo '--skip-git skip over all the git phases'
     echo '--skip-build skip the build phase'
@@ -223,6 +238,14 @@ while [ $# -gt 0 ]; do
         shift
         if [ -d $1 ]; then
             BUILD_DIR=$1
+        else
+            echo $1 is not a valid path
+            exit -1
+        fi
+    elif [ "$1" == "--qa-dir" ]; then
+        shift
+        if [ -d $1 ]; then
+            QA_DIR=$1
         else
             echo $1 is not a valid path
             exit -1
@@ -309,6 +332,7 @@ do
             fi
             if [ $DO_JSTEST != 0 ]; then
                 run_jstests
+                run_qatests
             fi
         fi
         # we may have launched children
