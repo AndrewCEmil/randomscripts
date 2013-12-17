@@ -119,8 +119,8 @@ function run_jstests() {
 }
 
 function run_qatests() {
-    cd $QA_DIR/mci
-    python run_qa_repo_tests.py --mci-mode --mongo-repo-path=$BUILD_DIR > test_files.out
+    cd $BUILD_DIR
+    python $QA_DIR/mci/run_qa_repo_tests.py --mci-mode --mongo-repo-path=$BUILD_DIR > test_files.out
     python buildscripts/smoke.py --continue-on-failure --with-cleanbb --mongod $BUILD_DIR/mongod --mongo $BUILD_DIR/mongo --report-file report.json  --mode=files $(cat ./test_files.out)
 }
 
@@ -331,8 +331,8 @@ do
                 run_unittests
             fi
             if [ $DO_JSTEST != 0 ]; then
-                run_jstests
                 run_qatests
+                run_jstests
             fi
         fi
         # we may have launched children
