@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 #Defaults
 which lcov
 if [ $(uname) == "Darwin" ]; then
