@@ -5,9 +5,9 @@ import random
 
 from pprint import pprint
 
-NUM_DOCS = 1000000
+NUM_DOCS = 125000
 NUM_FIELDS = 100
-NUM_UPDATES = 1000000
+NUM_UPDATES = 125000
 NUM_FIELDS_UPDATED = 10
 
 client = pymongo.MongoClient();
